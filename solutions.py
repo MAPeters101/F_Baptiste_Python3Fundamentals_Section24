@@ -4,29 +4,37 @@ Many functions in Python deal with numbers in a half-closed intervals.
 
 For example, range(n) returns integers in the interval [0, n).
 
-When we deal with integers, it is very easy to include n - we simply add 1 to it.
+When we deal with integers, it is very easy to include n - we simply add 1 to
+it.
 
 For example, to generate integers in the range [a, b], we use range(a, b+1).
 
-However, when it comes to real numbers there is no (mathematically speaking) "next" real number.
+However, when it comes to real numbers there is no (mathematically speaking)
+"next" real number.
 
-But for floats, remember that these are actually not real numbers, but approximations with some fixed precision - in those cases it is indeed possible to always calculate the "next" number after any given float.
+But for floats, remember that these are actually not real numbers, but
+approximations with some fixed precision - in those cases it is indeed
+possible to always calculate the "next" number after any given float.
 
-Read the Python documentation for the math module, and find in there a function that will help you calculate the "next" number after some given float.
+Read the Python documentation for the math module, and find in there a
+function that will help you calculate the "next" number after some given float.
 
 (You will need Python 3.9 and above for this)
 
 Solution
 The function we are interested in is called nextafter.
 
-Let's see how it works when we use it with 1 and get the next number (towards 10 for example):
+Let's see how it works when we use it with 1 and get the next number (towards
+10 for example):
 
 import math
 e = math.nextafter(1, 10)
 e
 Hopefully when you read the documentation, you also saw references to math.inf.
 
-We'll actually circle back to this in a later section of this course, but you should now be aware that the IEEE standard does allow for a special representation of "infinite" floats.
+We'll actually circle back to this in a later section of this course, but you
+should now be aware that the IEEE standard does allow for a special
+representation of "infinite" floats.
 
 We can create these floats using math.inf:
 
@@ -35,12 +43,15 @@ a
 As you can see the string representation is "inf", but this is a float:
 
 type(a)
-This means that we can also use it when we use the nextafter function without worrying about what to use as the "towards" number if we always just want to go right on the number scale:
+This means that we can also use it when we use the nextafter function without
+worrying about what to use as the "towards" number if we always just want to
+go right on the number scale:
 
 e = math.nextafter(1, math.inf)
 e
 Question 2
-Given a sequence of points, each one with possibly different number of dimensions, generate a list that contains the magnitude (norm) of the point.
+Given a sequence of points, each one with possibly different number of
+dimensions, generate a list that contains the magnitude (norm) of the point.
 
 For an n-dimensional point (therefore containing n components):
 
@@ -48,7 +59,8 @@ x = (x_1, x_2, ..., x_n)
 this value can be computed as:
 
 sqrt(x_1 ** 2 + x_2 ** 2 + ... + x_n **2)
-Write a function that performs this calculation and returns the norm of each point given in some sequence.
+Write a function that performs this calculation and returns the norm of each
+point given in some sequence.
 
 For example, if the sequence is:
 
@@ -61,7 +73,8 @@ data = [
 Your function should return this list:
 
 [1.0, 3.741657386773941, 9.16515138991168, 16.522711641858308]
-(Hint: you may want to read the math module docs to see if you can find a function in there that might help you out!)
+(Hint: you may want to read the math module docs to see if you can find a
+function in there that might help you out!)
 
 Solution
 We can certainly do this the "hard" way by manually calculating each norm.
@@ -74,7 +87,8 @@ We can calculate it's norm this way:
 norm_x = math.sqrt(x[0] ** 2 + x[1] ** 2 + x[2] ** 2)
 norm_x
 3.7416573867739413
-The problem is that we have "hard coded" the formula - if our point looks like this:
+The problem is that we have "hard coded" the formula - if our point looks
+like this:
 
 y = (1, 1, 2, 3, 5, 8, 13)
 We have to modify our formula. So, our approach is not generic enough.
@@ -100,7 +114,9 @@ norm(x)
 3.7416573867739413
 norm(y)
 16.522711641858304
-Now that we have this function created, we can write a function that generates the norm for every point in some given sequence such as the one provided in the question:
+Now that we have this function created, we can write a function that generates
+the norm for every point in some given sequence such as the one provided in
+the question:
 
 data
 [(0, 1), (1, 2, 3), (1, 3, 5, 7), (1, 1, 2, 3, 5, 8, 13)]
@@ -108,15 +124,19 @@ def gen_norms(data):
     return [norm(pt) for pt in data]
 gen_norms(data)
 [1.0, 3.7416573867739413, 9.16515138991168, 16.522711641858304]
-The math module actually has a function called hypot which does exactly what our norm function does.
+The math module actually has a function called hypot which does exactly what
+our norm function does.
 
-This function however, requires the individual coordinates be passed as positional arguments - so we need to unpack the tuple into positional arguments:
+This function however, requires the individual coordinates be passed as
+positional arguments - so we need to unpack the tuple into positional
+arguments:
 
 In other words, for the point (1, 1) we have to pass the coordinates this way:
 
 math.hypot(1, 1)
 1.4142135623730951
-If we have a tuple containing (1, 1), then we can call the hypot function this way:
+If we have a tuple containing (1, 1), then we can call the hypot function
+this way:
 
 t = (1, 1)
 math.hypot(*t)
@@ -134,7 +154,8 @@ def gen_norms(data):
 gen_norms(data)
 [1.0, 3.741657386773941, 9.16515138991168, 16.522711641858308]
 Question 3
-Given an arbitrary sequence of numerical values, write a function that "analyzes" the sequence by generating print outputs of:
+Given an arbitrary sequence of numerical values, write a function that
+"analyzes" the sequence by generating print outputs of:
 
 number of elements
 number of unique elements
@@ -152,7 +173,8 @@ data = [
     94, 35, 68, 70, 52, 53, 30, 87, 79, 51, 92, 72, 55, 40,
     15, 74, 86, 87, 91, 70, 45, 37
 ]
-For calculations that result in floats, display only 3 digits after the decimal point for those result.
+For calculations that result in floats, display only 3 digits after the
+decimal point for those result.
 
 Your function should print information such as this to the console:
 
@@ -169,9 +191,11 @@ median: 63.500
 Solution
 We already know about the min and max functions that are built-in.
 
-We can use the len function to calculate the number of elements in the sequence.
+We can use the len function to calculate the number of elements in the
+sequence.
 
-For the number of unique elements, we can transform our data into a set first, and obatin the len of that set.
+For the number of unique elements, we can transform our data into a set first,
+and obatin the len of that set.
 
 Furthermore the statistics module provides functions such as:
 
@@ -179,7 +203,8 @@ mean
 stdev
 quantiles
 multimode
-Let's write a function that will perform all these calculations and print this analysis.
+Let's write a function that will perform all these calculations and print this
+analysis.
 
 import statistics as stats
 
